@@ -304,7 +304,7 @@ typedef enum tagCBS_PACKAGE_ENCRYPTION_ENUM
 typedef struct tagCbsPackageDecryptionData
 {
     UINT cbDecryptionData;
-    unsigned __int8* pDecryptionData;
+    PBYTE pDecryptionData;
 } CbsPackageDecryptionData;
 
 typedef enum tagLOG_SETUPLOG_SEVERITY
@@ -333,11 +333,11 @@ typedef enum _CbsActivityType
 
 typedef struct _CbsActivity
 {
-    wchar_t* objectName;
+    PWSTR objectName;
     CbsActivityType objectType;
     CbsInstallState targetState;
-    wchar_t* displayName;
-    wchar_t* description;
+    PWSTR displayName;
+    PWSTR description;
 } CbsActivity;
 
 //WDS funcarea macros
