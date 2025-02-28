@@ -1,0 +1,98 @@
+﻿#pragma once
+#include <Windows.h>
+typedef enum _OFFLINE_STORE_CREATION_PARAMETERS_FLAGS
+{
+    OFFLINE_STORE_CREATION_PARAMETERS_FLAG_FAKE_ONLINE = 0x4,
+    OFFLINE_STORE_CREATION_PARAMETERS_FLAG_APPLY_NO_KTM = 0x10,
+} OFFLINE_STORE_CREATION_PARAMETERS_FLAGS;
+typedef struct _OFFLINE_STORE_CREATION_PARAMETERS
+{
+    SIZE_T cbSize;
+    DWORD dwFlags;
+    LPCWSTR pszHostSystemDrivePath;
+    LPCWSTR pszHostWindowsDirectoryPath;
+    LPCWSTR pszTargetWindowsDirectoryPath;
+    LPCWSTR pszHostRegistryMachineSoftwarePath;
+    LPCWSTR pszHostRegistryMachineSystemPath;
+    LPCWSTR pszHostRegistryMachineSecurityPath;
+    LPCWSTR pszHostRegistryMachineSAMPath;
+    LPCWSTR pszHostRegistryMachineComponentsPath;
+    LPCWSTR pszHostRegistryUserDotDefaultPath;
+    LPCWSTR pszHostRegistryDefaultUserPath;
+    ULONG ulProcessorArchitecture;
+    LPCWSTR pszHostRegistryMachineOfflineSchemaPath;
+} OFFLINE_STORE_CREATION_PARAMETERS, *POFFLINE_STORE_CREATION_PARAMETERS;
+typedef struct _OFFLINE_STORE_CREATION_PARAMETERS_EX : _OFFLINE_STORE_CREATION_PARAMETERS
+{
+    LPCWSTR pszExternalServicingDirectory;
+    LPCWSTR pszHostRegistryMachineDriversPath;
+    LPCWSTR pszHostRegistryBcdPath;
+    LPCWSTR pszHostRegistryExternalServicingPath;
+} OFFLINE_STORE_CREATION_PARAMETERS_EX, *POFFLINE_STORE_CREATION_PARAMETERS_EX;
+
+typedef HRESULT(WINAPI* PCREATE_NEW_OFFLINE_STORE_FUNCTION)(
+    DWORD dwFlags,
+    const OFFLINE_STORE_CREATION_PARAMETERS* pParameters,
+    const GUID* riid,
+    IUnknown** ppStore,
+    PDWORD pdwDisposition);
+typedef HRESULT(WINAPI* POPEN_EXISTING_OFFLINE_STORE_FUNCTION)(
+    DWORD dwFlags,
+    const _OFFLINE_STORE_CREATION_PARAMETERS* pParameters,
+    const GUID* riid,
+    IUnknown** ppStore,
+    PDWORD pdwDisposition);
+typedef HRESULT(WINAPI* PCREATE_NEW_PSEUDO_WINDOWS_FUNCTION)(
+    DWORD dwFlags,
+    LPCWSTR pszRootDirectory,
+    LPCWSTR pszRootKey,
+    _OFFLINE_STORE_CREATION_PARAMETERS* pParameters);
+typedef HRESULT(WINAPI* PCREATE_NEW_PSEUDO_WINDOWS_EX_FUNCTION)(
+    DWORD dwFlags,
+    LPCWSTR pszRootDirectory,
+    LPCWSTR pszRootKey,
+    _OFFLINE_STORE_CREATION_PARAMETERS* pParameters,
+    PVOID* ppvRootkey);  // Supposed to be Windows::Rtl::IRtlKey**
+typedef HRESULT(WINAPI* PCREATE_NEW_WINDOWS_FUNCTION)(
+    DWORD dwFlags,
+    LPCWSTR pszSystemDrive,
+    _OFFLINE_STORE_CREATION_PARAMETERS* pParameters,
+    PVOID* ppvKeys, // Supposed to be Windows::WCP::COM::CRegistryKeys **
+    PDWORD pdwDisposition);
+typedef HRESULT(WINAPI* PDISMOUNT_REGISTRY_HIVES_FUNCTION)(
+    PVOID pvKeys); // Supposed to be Windows::WCP::COM::CRegistryKeys **
+typedef HRESULT(WINAPI* PWCP_INITIALIZE_FUNCTION)(
+    PVOID* InitCookie);
+typedef HRESULT(WINAPI* PWCP_SHUTDOWN_FUNCTION)(
+    PVOID InitCookie);
+typedef HRESULT(WINAPI* PSET_ISOLATION_MALLOC_FUNCTION)(
+    IMalloc* alloc);
+typedef enum
+{
+    CREATE_NEW_OFFLINE_STORE_FLAGS_NO_MANIFEST_CACHING = 0x1,
+} CREATE_NEW_OFFLINE_STORE_FLAGS;
+typedef enum
+{
+    CREATE_NEW_WINDOWS_DISABLE_COMPONENT_BACKUPS = 0x1,
+    CREATE_NEW_WINDOWS_DISABLE_SMI = 0x2,
+    CREATE_NEW_WINDOWS_DISABLE_MANIFEST_CACHE = 0x4,
+    CREATE_NEW_WINDOWS_SINGLE_RESOURCE_OWNERSHIP = 0x8,
+    CREATE_NEW_WINDOWS_MOBILE_STORE = 0x20,
+    CREATE_NEW_WINDOWS_IS_ONE_CORE = 0x40,
+} CREATE_NEW_WINDOWS_FLAGS;
+typedef enum
+{
+    OPEN_EXISTING_OFFLINE_STORE_FLAGS_NO_MANIFEST_CACHING = 0x1,
+} OPEN_EXISTING_OFFLINE_STORE_FLAGS;
+typedef enum
+{
+    CREATE_NEW_PSEUDO_WINDOWS_FLAG_PICK_A_LOCATION = 0x1,
+    CREATE_NEW_PSEUDO_WINDOWS_FLAG_WINPE_LAYOUT = 0x2,
+    CREATE_NEW_PSEUDO_WINDOWS_FLAG_PICK_REG_ROOT = 0x4,
+    CREATE_NEW_PSEUDO_WINDOWS_FLAG_USE_EXT_STORAGE = 0x8,
+    CREATE_NEW_PSEUDO_WINDOWS_FLAG_KEEP_EXISTING = 0x10,
+} CREATE_NEW_PSEUDO_WINDOWS_FLAGS;
+typedef enum
+{
+    CREATE_NEW_WINDOWS_VERSION = 0x1,
+} CREATE_NEW_WINDOWS_FLAGS2;

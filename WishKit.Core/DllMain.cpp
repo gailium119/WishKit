@@ -1,5 +1,6 @@
 ﻿#include <Windows.h>
-
+#include "Cbs\WishKit.CbsApi.h"
+#include "Cbs\WishKit.Wcp.h"
 extern "C" __declspec(dllexport) long _unused = 0;
 
 BOOL APIENTRY DllMain( HMODULE hModule,

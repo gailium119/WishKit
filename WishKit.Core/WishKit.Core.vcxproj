@@ -55,5 +55,9 @@
       <Version>1.0.187</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Cbs\WishKit.Wcp.h" />
+    <ClInclude Include="Cbs\WishKit.CbsApi.h" />
+  </ItemGroup>
   <Import Project="..\Mile.Project.Windows\Mile.Project.Cpp.targets" />
 </Project>
